@@ -43,11 +43,11 @@ $ npm run start
 
 Route | Method |Body/Parameter | Sample Response | Description |
 |---|---|---|---|---|
-|api/v1/song |list | NA | ![](Images/GetSongs.png) | Used to get list of Songs from SQLite Database |
-|api/v1/userplaylist/ |createPlaylist | {"userEmail": "chhabriasonia05@gmail.com", "playlistId" : 6, "playlistName": "Test Playlist 6", "createdDate": "2021-05-16"} | ![](Images/CreatePlaylist.png) | Creates playlist for logged-in user  |
-|api/v1/userplaylist/ |getPlaylist | userEmail |![](Images/GetPlaylist.png)| Used to get playlist created by logged-in user |
-|api/v1/userplaylist/ |addSongsInPlaylist | {"userEmail": "chhabriasonia05@gmail.com", "playlistId" : 3, "songId":2, "createdDate": "2021-05-16"} | ![](Images/AddSongsInPlaylist.png) | Used to add songs in playlist |
-|api/v1/userplaylist/ |getSongsInPlaylist | playlistId, userEmail | ![](Images/GetSongsInPlaylist.png) | Used to get songs in playlist for logged-in user |
+|api/v1/song |list | NA | ![](Images/GetSongs.PNG) | Used to get list of Songs from SQLite Database |
+|api/v1/userplaylist/ |createPlaylist | {"userEmail": "chhabriasonia05@gmail.com", "playlistId" : 6, "playlistName": "Test Playlist 6", "createdDate": "2021-05-16"} | ![](Images/CreatePlaylist.PNG) | Creates playlist for logged-in user  |
+|api/v1/userplaylist/ |getPlaylist | userEmail |![](Images/GetPlaylist.PNG)| Used to get playlist created by logged-in user |
+|api/v1/userplaylist/ |addSongsInPlaylist | {"userEmail": "chhabriasonia05@gmail.com", "playlistId" : 3, "songId":2, "createdDate": "2021-05-16"} | ![](Images/AddSongsInPlaylist.PNG) | Used to add songs in playlist |
+|api/v1/userplaylist/ |getSongsInPlaylist | playlistId, userEmail | ![](Images/GetSongsInPlaylist.PNG) | Used to get songs in playlist for logged-in user |
 
 
 ## Database Schema
