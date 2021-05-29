@@ -14,10 +14,6 @@ public class SongService {
 
 	@Autowired
     private SongRepository songRepository;
-
-    // some booking service methods
-
-    // get all bookings booked by a customer with matching phone number and books written by a given list of authors
     public List<Album> getAll() {
     return songRepository.findAll();
     }

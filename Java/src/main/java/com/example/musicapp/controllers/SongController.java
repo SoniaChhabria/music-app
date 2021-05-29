@@ -15,6 +15,7 @@ import com.example.musicapp.repositories.SongRepository;
 import com.example.musicapp.services.SongService;
 
 @CrossOrigin(origins = "http://localhost:3000")
+/*@CrossOrigin(origins = "https://music-webapp-sc.herokuapp.com")*/
 @RestController
 @RequestMapping("/api/v1/song")
 public class SongController {
@@ -25,7 +26,6 @@ public class SongController {
 	
 	@GetMapping
 	public List<Album> list(){
-		//List<Song> songs = new ArrayList<>();
 		return songRepository.findAll();
 	}
 	

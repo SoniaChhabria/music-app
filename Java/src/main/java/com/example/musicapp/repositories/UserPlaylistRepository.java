@@ -13,5 +13,4 @@ public interface UserPlaylistRepository extends JpaRepository<Playlist, Long> {
 
 	List<Playlist> findByUserEmail(String userEmail);
 	List<Song> findByUserEmailAndPlaylistId(String userEmail, int playlistId);
-    //List<Album> queryBy(String userEmail);
 }

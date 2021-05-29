@@ -22,34 +22,13 @@ import javax.persistence.Table;
 public class Playlist {
 
 	@Id
-	//@Column(name="user_email", nullable = false)
 	private String userEmail;
 	@Id	
-	//@Column(name="playlist_id",nullable = false)
 	private int playlistId;
 
 	private String playlistName;
 	private Date createdDate;
-	/*
-	private int songId;
 	
-	@Column(table="playlistsongmapping")
-	private Date createdDate;
-	
-	public int getSongId() {
-		return songId;
-	}
-	public void setSongId(int songId) {
-		this.songId = songId;
-	}
-	public Date getAddedDate() {
-		return addedDate;
-	}
-	public void setAddedDate(Date addedDate) {
-		this.addedDate = addedDate;
-	}
-	
-    */
 	public String getUserEmail() {
 		return userEmail;
 	}

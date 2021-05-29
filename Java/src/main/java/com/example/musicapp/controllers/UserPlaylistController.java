@@ -24,6 +24,7 @@ import com.example.musicapp.repositories.UserPlaylistRepository;
 import com.example.musicapp.repositories.UserPlaylistSongRepository;
 
 @CrossOrigin(origins = "http://localhost:3000")
+/*@CrossOrigin(origins = "https://music-webapp-sc.herokuapp.com")*/
 @RestController
 @RequestMapping("/api/v1/userplaylist")
 public class UserPlaylistController {
@@ -60,19 +61,6 @@ public class UserPlaylistController {
 		System.out.println(playlistSongDetails.getUserEmail());
 		userPlaylistSongRepository.save(playlistSongDetails);
 	}
-	/*
-	@PostMapping
-	@ResponseStatus(HttpStatus.OK)
-	public void createPlaylist(@RequestBody Playlist playlist) {
-		//creates a playlist
-	}
-	
-	@PostMapping
-	@ResponseStatus(HttpStatus.OK)
-	public void addSongsInPlaylist(@RequestBody PlaylistSongMapping playlistSongDetails) {
-		// adds song in a playlist
-	}
-	*/
 	
 	@GetMapping("/{userEmail}/{playlistId}")
 	public List<HashMap<String,String>> getSongsInPlaylist(@PathVariable("playlistId") int playlistId, @PathVariable("userEmail") String userEmail){

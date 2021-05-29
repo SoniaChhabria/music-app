@@ -14,7 +14,6 @@ import com.example.musicapp.models.Song;
 public interface UserPlaylistSongRepository extends JpaRepository<PlaylistSongMapping, Long> {
 
 	List<PlaylistSongMapping> findByUserEmail(String userEmail);
-	//List<PlaylistSongMapping> findByUserEmailAndPlaylistId(String userEmail, int playlistId);
 	@Query(value = "SELECT S.song_id"
 			+ "	,S.album_id"
 			+ "	,S.song_name"
