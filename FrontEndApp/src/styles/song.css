@@ -16,11 +16,10 @@
  .search-container {
     float: right;
   }
-  * {box-sizing: border-box;}
 
-
-  th, td {
-    text-align: center;
-    padding-right: 50px;
-    margin-left: 0px;
+  .search-box{
+    width: 50%;
+    margin: 50px;
+    padding: 5px;
+    border-radius: 5px;
   }

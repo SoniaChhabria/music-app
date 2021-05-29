@@ -3,6 +3,18 @@
 }
 
 .btn{
-    margin-right: 15px;
+    margin-left: 15px;
     width: 200px;
+    height: 40px;
+    color: black;
+}
+.btn:focus, .btn:hover{
+    width: 200px;
+    height: 40px;
+    color: black;  
+}
+.btn_clicked, .btn_clicked:focus, .btn_clicked:hover{
+    color: white;
+    background-color: #282c34;
+  
 }

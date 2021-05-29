@@ -12,7 +12,6 @@ class PlaylistComponent extends Component{
             show:false,
             playlistName:"",
             userPlaylist:[],
-            loggedInUser:"chhabriasonia05@gmail.com",
             showSongs: false,
             showPlaylist: true,
             userSongsInPlaylist:[],
@@ -38,17 +37,16 @@ class PlaylistComponent extends Component{
         this.setState({ show: false });
       };
     componentDidMount(){
-        this.getPlaylist(this.state.loggedInUser)
+        this.getPlaylist(this.props.userEmail)
 
     }
     getPlaylist(userEmail){
-
+        //get playlist's created for logged-in user 
         fetch(baseURL+"api/v1/userplaylist/"+userEmail, {
         "method": "GET"
     })
   .then(response => response.json())
   .then(response => {
-      console.log(response)
     this.setState({
         userPlaylist: response,
         playlistName:"",
@@ -60,11 +58,10 @@ class PlaylistComponent extends Component{
 
     }
     handleSave() {
+        //create a new playlist for logged-in user
         var date = new Date();
-        console.log(date.getDate);
-        console.log(Moment(date).format("YYYY-MM-DD"))
         var data = {
-            "userEmail": this.state.loggedInUser, "playlistId" : this.state.userPlaylist.length + 1, "playlistName": this.state.playlistName, "createdDate": Moment(date).format("YYYY-MM-DD")
+            "userEmail": this.props.userEmail, "playlistId" : this.state.userPlaylist.length + 1, "playlistName": this.state.playlistName, "createdDate": Moment(date).format("YYYY-MM-DD")
         }
         fetch(baseURL+"api/v1/userplaylist/createPlaylist", {
             "method": "POST",
@@ -74,8 +71,10 @@ class PlaylistComponent extends Component{
             }
 
         })
-      .then(
-        this.getPlaylist(this.state.loggedInUser)
+      .then( () => {
+        this.getPlaylist(this.props.userEmail)
+      }
+
       )
       .catch(err => { console.log(err); 
       }); 
@@ -90,21 +89,6 @@ class PlaylistComponent extends Component{
             showSongs: true,
             showPlaylist: false
         })
-
-    //     console.log(playlistId)
-    //     fetch("http://localhost:8080/api/v1/userplaylist/"+userEmail+"/"+playlistId, {
-    //         "method": "GET"
-    //     })
-    //   .then(response => response.json())
-    //   .then(response => {
-    //       console.log(response)
-    //     this.setState({
-    //         userSongsInPlaylist: response,
-    //         showSongs: true
-    //     })
-    //   })
-    //   .catch(err => { console.log(err); 
-    //   });
     }
 
     handleChange(event) {
@@ -115,6 +99,7 @@ class PlaylistComponent extends Component{
     }
 
     addSongs(){
+        //set flags to add songs in playlist
         this.setState({
             showSongs: false,
             showAddedlist: true,
@@ -123,6 +108,7 @@ class PlaylistComponent extends Component{
     }
 
     shuffleSongs(){
+        //set flags to shuffle songs 
         this.setState({
             showSongs:true,
             showShuffledSongs: true
@@ -131,22 +117,23 @@ class PlaylistComponent extends Component{
 
     render(){
 
+        const createPlaylist = this.state.show? "btn btn-outline-secondary create-playlist btn_clicked":"btn btn-outline-secondary create-playlist";
         return(
             <div>
             {this.state.showPlaylist?
             <div>
 
                 {this.state.userPlaylist.map(playlist =>
-                    <div className="card" style={{margin:"30px", backgroundColor: "#efefef", padding:"30px"}} onClick={ () => this.getSongsInPlaylist(playlist.playlistId, this.state.loggedInUser)} key={"playlist_"+playlist.playlistId}>
+                    <div className="card card-pointer" style={{margin:"30px", backgroundColor: "#efefef", padding:"30px"}} onClick={ () => this.getSongsInPlaylist(playlist.playlistId, this.props.userEmail)} key={"playlist_"+playlist.playlistId}>
                             <div className="card-body">
-                            <div style={{display:"inline", float:"left"}}>{playlist.playlistName}</div>
-                            <div style={{display:"inline", float:"right"}}>{playlist.createdDate}</div>
+                            <div style={{display:"inline", float:"left", marginTop: "-9px"}}>{playlist.playlistName}</div>
+                            <div style={{display:"inline", float:"right", marginTop: "-9px"}}>{playlist.createdDate}</div>
                             </div>
                     </div>
                 )}
 
 
-            <button onClick={this.showModal} type="button" className="btn btn-outline-secondary create-playlist">Create Playlist</button>
+            <button onClick={this.showModal} type="button" className={createPlaylist}>Create Playlist</button>
             <ModalComponent show={this.state.show} handleClose={this.hideModal} handleSave={this.handleSave}>
                 <div>
                 <h1>Create a new Playlist</h1> 
@@ -157,6 +144,7 @@ class PlaylistComponent extends Component{
                         value={this.state.playlistName} 
                         onChange={this.handleChange}
                         placeholder="MyMusic"
+                        className="create-playlist-box"
                         /> 
                 <br/>
                 <br/>                  
@@ -169,16 +157,15 @@ class PlaylistComponent extends Component{
             {
             this.state.showSongs && this.state.showShuffledSongs?
             <div>
-                <TabComponent showSongs={this.state.showSongs} addSongs={this.addSongs} shuffleSongs={this.shuffleSongs}/>
-                <SongComponent userEmail={this.state.loggedInUser} playlistId={this.state.playlistId} showSongs={this.state.showSongs} showShuffledSongs={this.state.showShuffledSongs}/>            
+                <SongComponent userEmail={this.props.userEmail} playlistId={this.state.playlistId} showSongs={this.state.showSongs} showShuffledSongs={this.state.showShuffledSongs}/>            
             </div>
             :!this.state.showSongs && this.state.showAddedlist?
-            <SongComponent userEmail={this.state.loggedInUser} playlistId={this.state.playlistId} showSongs={this.state.showSongs} showAddedlist={this.state.showAddedlist} />
+            <SongComponent userEmail={this.props.userEmail} playlistId={this.state.playlistId} showSongs={this.state.showSongs} showAddedlist={this.state.showAddedlist} />
             :
             this.state.showSongs?
             <div>
-                <TabComponent showSongs={this.state.showSongs} playlistId={this.state.playlistId} userEmail={this.state.loggedInUser} addSongs={this.addSongs} shuffleSongs={this.shuffleSongs}/>
-                <SongComponent userEmail={this.state.loggedInUser} playlistId={this.state.playlistId} showSongs={this.state.showSongs}/>
+                <TabComponent showSongs={this.state.showSongs} playlistId={this.state.playlistId} userEmail={this.props.userEmail} addSongs={this.addSongs} shuffleSongs={this.shuffleSongs}/>
+                <SongComponent userEmail={this.props.userEmail} playlistId={this.state.playlistId} showSongs={this.state.showSongs}/>
             </div>
             :""
     }

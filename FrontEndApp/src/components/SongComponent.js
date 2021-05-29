@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/song.css';
 import Moment from 'moment';
-
-import TabComponent from './TabComponent';
 import { baseURL } from '../config';
 
 class SongComponent extends Component{
@@ -21,9 +19,7 @@ class SongComponent extends Component{
 
 
     componentDidMount(){
-        // get list of songs
-        console.log(" In Song Component!")
-        console.log(this.props.userEmail, this.props.token)
+        // get list of songs or list of songs in user's playlist
         var url=""
         if(this.props.userEmail != null && this.props.playlistId != null ){
             url = baseURL+"api/v1/userplaylist/"+this.props.userEmail+"/"+this.props.playlistId
@@ -47,15 +43,13 @@ class SongComponent extends Component{
         )
         .then(response => response.json())
         .then(response => {
-            console.log(response)
             if(this.props.showAddedlist){
-                console.log("Clicked add songs")
+                // get songs that are not in playlist for user to add 
                 this.getSongsNotInPlaylist(response)
             }
             else{
                 if(this.props.showShuffledSongs){
-                    console.log(" In shuffle ")
-                    console.log(response)
+                    // shuffle list of songs 
                     response = response.sort(function (a, b) {return Math.random() - 0.5;});
                     this.setState({
                         songs: response,
@@ -83,7 +77,6 @@ class SongComponent extends Component{
             })
             .then(songs => songs.json())
             .then(songs => {
-                console.log("Clicked add songs")
                 if(response.length >0){
                 var resIds = response.map(res => res.songId)
                 response = songs.filter(i => !resIds.includes(i.songId.toString()))
@@ -103,8 +96,8 @@ class SongComponent extends Component{
     }
 
     handleChange(event){
-        const {name, value} = event.target
-        console.log(value)
+        //for words typed by user, filter the list of songs and generate serach results
+        const {value} = event.target
         var filteredSongs = this.state.songs.filter(s => s.songName.toLowerCase().includes(value.toLowerCase()));
         if(filteredSongs){
             this.setState({
@@ -112,13 +105,10 @@ class SongComponent extends Component{
                 searchText: value
             })
         }
-        console.log(this.state.songs.filter(s => s.songName.includes(value)))
     }
     addSongsInPlaylist(playlistId, userEmail, songId){
-        console.log(playlistId,userEmail,songId)
+        //call POST api to save songs in user playlist
         var date = new Date();
-        console.log(date.getDate);
-        console.log(Moment(date).format("YYYY-MM-DD"))
         var data = {
             "userEmail": userEmail, "playlistId" : playlistId, songId: songId ,"createdDate": Moment(date).format("YYYY-MM-DD")
         }
@@ -135,8 +125,6 @@ class SongComponent extends Component{
         })
         .then(response => response.json())
         .then(response => {
-            console.log("This")
-            console.log(response)
             this.getSongsNotInPlaylist(response)
         })
     
@@ -160,42 +148,33 @@ class SongComponent extends Component{
                         value={this.state.searchText} 
                         onChange={this.handleChange}
                         placeholder="Search.."
+                        className="search-box"
                         /> 
-                <button type="submit" onClick={this.searchSongs}><i className="fa fa-search"></i></button>
                 </div>
                 :""
                }
-                <table className = "table table-striped">
-                    {this.state.filteredSongs.length >0?
-                    <thead>
-                        <tr>
-                            <th> Song Details</th>
-                            <th> Duration</th>
-                            {this.props.showAddedlist? <th>Add to Playlist</th>:""}
-                        </tr>
-                    </thead>
-                    :""}
+                <table className = "table">
                     <tbody>
                     {this.state.filteredSongs.map(
                         song =>
-                        <tr key={song.songId}> 
-                            <td>                     
-                            {song.songName}
+                        <div className="card" style={{margin:"30px", backgroundColor: "#efefef", padding:"30px"}}>
+                            <div className="card-body">
+                            <div style={{float:"left", marginTop: "-9px"}}>{song.songName}</div>
                             <br/>
-                            {song.artistName}
+                            <div style={{float:"left", marginTop: "-9px"}}>{song.artistName}</div>
                             <br/>
-                            {song.albumName}
-                            </td>
-                            <td>
-                                {song.duration}
-                            </td>
+                            <div style={{float:"left", marginTop: "-9px"}}>{song.albumName}</div>
                             {this.props.showAddedlist?
-                            <td>
-                            {<a onClick={ () => this.addSongsInPlaylist(this.props.playlistId, this.props.userEmail, song.songId)}>Add</a>}
-                        </td>
-                        :""}
-                        </tr>
-
+                            <a style={{display:"inline", float:"right", marginTop: "-9px", marginLeft: "70px" , cursor: "pointer"}} onClick={ () => this.addSongsInPlaylist(this.props.playlistId, this.props.userEmail, song.songId)}>
+                            Add
+                            </a>
+                            :""
+                            }
+                            <div style={{display:"inline", float:"right", marginTop: "-9px"}}>{song.duration}</div>
+                            
+                            </div>
+                        </div>
+                        
                     )}
                     </tbody>
                 </table> 
