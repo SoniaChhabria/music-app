@@ -1,5 +1,6 @@
 [![Hosted Site](https://img.shields.io/badge/Live%20-Dashboard-green)](https://music-webapp-sc.herokuapp.com/)
 # Music App
+![](Images/MusicApp.gif)
 
 ## Technology Stack:
 - Front-end: React JS

@@ -5,7 +5,7 @@ import { GoogleLogin } from 'react-google-login';
 import { refreshTokenSetup } from '../components/RefreshToken';
 
 
- const clientId = '{Update Client Id}'
+ const clientId = '{Update Client IDd}'
 
 function Login(props) {
   const onSuccess = (res) => {
@@ -20,8 +20,8 @@ function Login(props) {
   };
 
   return (
-    <div class="container">
-      <div class="vertical-center">
+    <div className="container">
+      <div className="vertical-center">
       <GoogleLogin
         clientId={clientId}
         buttonText="Login"
